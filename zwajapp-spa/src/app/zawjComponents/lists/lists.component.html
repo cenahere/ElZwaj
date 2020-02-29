@@ -1,0 +1,28 @@
+<div class="container mt-1">
+  <div class="row">
+    <div class="col-md-11 text-center mt-3 rtl">
+      <h3 style="font-family:'Droid-Arabic-Kufi';">{{likeParam === 'Likers' ? 'من أعجبوا بي' : 'من أعجبت بهم'}} :
+        {{pagination.totalItems}}</h3>
+    </div>
+    <div class="col-md-1" [ngClass]="{'float-left':authService.dir==='rtl'}">
+      <div class="btn-group-vertical">
+        <button lang type="button" [(ngModel)]="likeParam" btnRadio="Likers" (click)="loadUsers();"
+          class="btn mb-1 ajs-button btn-up" [ngStyle]="{'background':likeParam ==='Likers'?'red' : ''}">أعجبهم</button>
+        <button lang type="button" [(ngModel)]="likeParam" (click)="loadUsers();" btnRadio="Likees"
+          class="btn ajs-button btn-down" [ngStyle]="{'background':likeParam ==='Likees'?'red' : ''}">يعجبونني</button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4 ">
+    <div *ngFor="let user of users" class="col-sm-6 col-md-4 col-lg-4 col-xl-2">
+      <app-member-card [user]="user"></app-member-card>
+    </div>
+  </div>
+
+  <div *ngIf="pagination.totalItems>0" class="d-flex justify-content-center">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemPerPage"
+      [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="السابق" nextText="التالي"
+      firstText="الاول" lastText="الاخير">
+    </pagination>
+  </div>
+</div>

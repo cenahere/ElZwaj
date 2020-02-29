@@ -1,0 +1,60 @@
+<div class="text-center">
+  <h4 [hidden]="authService.dir=='ltr'" style="font-family:'Droid-Arabic-Kufi'; font-weight: bolder;"> يوجد {{pagination.totalItems}} <span *ngIf="pagination.totalItems>10">اقتراح</span>
+      <span *ngIf="pagination.totalItems<=10&&pagination.totalItems!=0">اقتراحات</span>
+  </h4>
+  <h4 [hidden]="authService.dir=='rtl'" *ngIf="pagination.totalItems!=0" style="font-family:'Impact'; font-weight: bold;"> We Found {{pagination.totalItems}} <span *ngIf="pagination.totalItems>10">Suggestion</span>
+    <span *ngIf="pagination.totalItems<=10&&pagination.totalItems!=0">Suggestions</span>
+   </h4>
+
+  <h4 *ngIf="pagination.totalItems==0" [ngStyle]="{'font-family':authService.dir==='rtl'?'Droid-Arabic-Kufi':'Impact','font-weight':authService.dir==='rtl'?'bolder':'normal'}"><span>لا توجد اقتراحات </span> </h4>
+</div>
+
+<div [dir]="authService.dir" class=" container mt-3">
+  <form dir="rtl" form="ngForm" (ngSubmit)="search=false;loadUsers();" class="form-inline" novalidate>
+      <div class="form-group">
+          <label lang for="minAge">العمر الأدنى</label>
+          <input type="number" [(ngModel)]="userParams.minAge" class="form-control ml-1 mr-2 ml-2" style="width: 70px" id="minAge" name="minAge">
+      </div>
+
+      <div class="form-group px-2">
+          <label lang  for="maxAge">العمر الأقصى</label>
+          <input type="number" [(ngModel)]="userParams.maxAge" class="form-control ml-1 mr-2 ml-2" style="width: 70px" id="maxAge" name="maxAge">
+      </div>
+
+      <div class="form-group px-2">
+          <label lang for="gender"> عرض  </label>
+          <select lang [(ngModel)]="userParams.gender" class="form-control ml-1" style="width: 130px" id="gender" name="gender">
+      <option *ngFor="let gender of genderList" [value]="gender.value">
+        {{gender.display}}
+      </option>
+    </select>
+      </div>
+      <button lang type="submit" style="font-family:'JF-FLAT'" class="btn btn-dark btn-small ml-2 mr-2">بحث</button>
+      <button lang type="button" style="font-family:'JF-FLAT'" (click)="search=false;resetFilter();" class="btn btn-dark btn-small ml-2 mr-2">استعاده</button>
+
+      <div class="col">
+        <div class="btn-group-vertical" [ngClass]="authService.dir=='rtl'?'float-left':'float-right'">
+          <button lang type="button" [(ngModel)]="userParams.orderBy" btnRadio="lastActive" (click)="loadUsers();" name="orderBy" class="btn mb-1 ajs-button btn-up" [ngStyle]="{'background':userParams.orderBy==='lastActive'?'red' : ''}">الأحدث ظهوراً</button>
+          <button lang type="button" [(ngModel)]="userParams.orderBy" (click)="loadUsers();" btnRadio="created" name="orderBy" class="btn ajs-button btn-down" [ngStyle]="{'background':userParams.orderBy==='created'?'red' : ''}">الأحدث إشتراكاً</button>
+      </div>
+    </div>
+
+  </form>
+  <br>
+
+
+<div class="rtl container mt-3">
+  <div class="row">
+    <div *ngFor='let user of users' class="col-lg-2 col-md-3 col-sm-6">
+      <app-member-card [user]='user'></app-member-card>
+    </div>
+
+  </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemPerPage" [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="السابق" nextText="التالي" firstText="الاول" lastText="الاخير">
+  </pagination>
+</div>
+
+

@@ -1,0 +1,71 @@
+<div class="card">
+    <div class="card-body" #panel>
+        <div style="font-weight:bold;font-family:'Tajawal';font-size:1.2rem;" *ngIf="messages?.length === 0">
+            لا توجد رسائل حتى الآن ... أكتب مرحباً وأرسلها لتبدأ قصة جديدة
+        </div>
+
+        <ul class="chat">
+            <li *ngFor="let message of messages">
+                <!-- Inbox -->
+                <div *ngIf="message.senderId == recipientId">
+                    <div class="text-left">
+                        <div class="badge badge-primary">
+                            <span>
+                              <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKhownAs}}"
+                                  class="rounded-circle">
+                          </span>
+                            <strong class="ml-1" style="vertical-align: top;">{{message.senderKhownAs}}</strong>
+                            <small style="vertical-align: top;margin-right: 5px;" class="text-muted">
+                              <span class="fa fa-clock-o"><small>{{message.messageSend | timeAgo}}</small></span>
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="text-left">
+                        <p class="content-inbox text text-primary d-inline-block">{{message.content}}</p>
+                    </div>
+
+                </div>
+
+
+                <!-- Outbox -->
+                <div *ngIf="message.senderId != recipientId">
+                    <div class="text-right">
+                        <div class="badge badge-info ">
+                            <span class="chat-img">
+                              <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKhownAs}}"
+                                  class="rounded-circle">
+                          </span>
+                            <strong style="vertical-align: top;" class="ml-1">{{message.senderKhownAs}}</strong>
+                            <small style="vertical-align: top;margin-right: 5px;" class="text-muted">
+                              <span
+                                  class="align-middle  fa fa-clock-o"><small>{{message.messageSend | timeAgo}}</small></span>
+                            <strong *ngIf="!message.isRead" class="text-danger align-middle">(غير مقروءة)</strong>
+                            <strong *ngIf="message.isRead" class="text-warning align-middle">(مقروءة
+                                  {{message.dateRead | timeAgo}})</strong>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <p class="text text-info content-outbox ">{{message.content}}</p>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="card-footer">
+        <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && sendMessage();">
+            <div class="input-group">
+                <input [(ngModel)]="newMessage.content" type="text" name="content" required class="form-control input-sm" placeholder="أكتب رسالتك هنا">
+                <div class="input-group-append">
+                    <button class="btn btn-primary ml-1" [disabled]="!messageForm.valid">إرسال</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class='rtl container mt-5'>
+    <div *ngIf='!registerMode' style="text-align: center;">
+        <h2 style="font-family:'JF-Flat'">زواج ياتي لك بشريك في الحياة</h2>
+        <h5 style="font-family:'JF-Flat'">
+            تخيل حياتك مع توائم روحك مع زواج انت الان علي بعد خطوة من تحقيق حلمك
+        </h5>
+    </div>
+    <div class='text-center'>
+        <button (click)='registerToggle();' style="font-family:'JF-Flat'" class="btn btn-primary btn-lg">اشترك معنا</button>
+    </div>
+</div>
+<div *ngIf='registerMode' class="container">
+    <div class='row justify-content-center'>
+        <div class="col-4">
+            <!-- here register component -->
+            <app-register (cancelRegister)='cancelRegister($event)'></app-register>
+        </div>
+    </div>
+</div>
+
+<!-- يتكرر العنصر ثلاثة مرات ولا يجوز تكرار الديركتيف مرتين في  نفس العنصر  -->
+<!--  ومن هنا تاتي اهمية ng-Container هو عنصر يحمل قيمة يتغير محتواه او لا يظهر علي حسب التمبيلت -->
+<ng-template [ngIf]='true'>
+    <h1 appLang *ngFor='let item of [1,2,3]'>Hello</h1>
+</ng-template>
